@@ -1,0 +1,27 @@
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+
+# === Compiled Classes ===
+*.class
+
+# === Build Folders ===
+out/
+target/
+build/
+warbuild/
+
+# === Logs ===
+*.log
+
+# === OS/Editor Junk ===
+.DS_Store
+Thumbs.db
+
+# === JARs in lib (optional) ===
+# Αν θέλεις να κρατάς τα jars στο repo, αφαίρεσε τις επόμενες γραμμές
+WebContent/lib/*.jar
+
+# === HTML/JS Cache ή Temp Files ===
+*.tmp
+*.swp

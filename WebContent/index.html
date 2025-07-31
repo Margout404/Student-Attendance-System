@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Attendance System</title>
+</head>
+<body>
+<h1>Students</h1>
+
+<!-- Button to refresh student list -->
+<button onclick="fetchStudents()">Load Students</button>
+
+<!-- Display student list -->
+<ul id="student-list"></ul>
+
+<h2>Add New Student</h2>
+<form id="add-student-form">
+    <label>Full Name: <input type="text" id="name" required></label><br>
+    <label>Email: <input type="email" id="email" required></label><br>
+    <button type="submit">Add Student</button>
+</form>
+
+<script>
+    const studentList = document.getElementById("student-list");
+    const form = document.getElementById("add-student-form");
+
+    // Fetch and display all students
+    function fetchStudents() {
+        fetch("/StudentAttendanceManagementSystem/students")
+            .then(res => res.json())
+            .then(data => {
+                studentList.innerHTML = "";
+                data.forEach(student => {
+                    const li = document.createElement("li");
+                    li.textContent = `${student.id} - ${student.name} (${student.email})`;
+                    studentList.appendChild(li);
+                });
+            })
+            .catch(err => console.error("Error fetching students:", err));
+    }
+
+    // Add new student
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+
+        fetch("/StudentAttendanceManagementSystem/students", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name, email })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Failed to add student");
+            return res.json();
+        })
+        .then(() => {
+            form.reset();
+            fetchStudents(); // Refresh list
+        })
+        .catch(err => alert("Error: " + err.message));
+    });
+
+    // Initial load (optional)
+    // fetchStudents();
+</script>
+</body>
+</html>
